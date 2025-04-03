@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 30,
+    gap: 10,
   },
   button: {
     flex: 1,
