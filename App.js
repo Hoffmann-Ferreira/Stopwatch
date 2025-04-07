@@ -1,17 +1,58 @@
 import React, {Component} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      timer: 0,
+      initialButtonText: 'START',
+    };
+    //Variável para armazenar o timer
+    this.initialTimer = null;
+
+    this.timerCounter = this.timerCounter.bind(this);
+    this.clearTimer = this.clearTimer.bind(this);
+  }
+
+  timerCounter() {
+    if (this.initialTimer !== null) {
+      clearInterval(this.initialTimer);
+      this.setState({
+        initialButtonText: 'START',
+      });
+      this.initialTimer = null;
+    } else {
+      this.initialTimer = setInterval(() => {
+        this.setState({
+          timer: this.state.timer + 0.1,
+          initialButtonText: 'PAUSE',
+        });
+      }, 100);
+    }
+  }
+
+  clearTimer() {
+    this.setState({
+      timer: 0,
+      initialButtonText: 'START',
+    });
+    clearInterval(this.initialTimer);
+    this.initialTimer = null;
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Image source={require('./src/images/cronometro.png')} />
-        <Text style={styles.timeText}>0.0</Text>
+        <Text style={styles.timeText}>{this.state.timer.toFixed(1)}</Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>START</Text>
+          <TouchableOpacity style={styles.button} onPress={this.timerCounter}>
+            <Text style={styles.buttonText}>
+              {this.state.initialButtonText}
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>STOP</Text>
+          <TouchableOpacity style={styles.button} onPress={this.clearTimer}>
+            <Text style={styles.buttonText}>CLEAR</Text>
           </TouchableOpacity>
         </View>
       </View>
