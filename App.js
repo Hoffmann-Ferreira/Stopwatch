@@ -6,9 +6,12 @@ class App extends Component {
     this.state = {
       timer: 0,
       initialButtonText: 'START',
+      timesTamp: 0,
     };
     //Variável para armazenar o timer
     this.initialTimer = null;
+    //Exibição do último tempo
+    this.edisplayLastTime = false;
 
     this.timerCounter = this.timerCounter.bind(this);
     this.clearTimer = this.clearTimer.bind(this);
@@ -33,11 +36,13 @@ class App extends Component {
 
   clearTimer() {
     this.setState({
+      timesTamp: this.state.timer,
       timer: 0,
       initialButtonText: 'START',
     });
     clearInterval(this.initialTimer);
     this.initialTimer = null;
+    this.edisplayLastTime = true;
   }
 
   render() {
@@ -54,6 +59,13 @@ class App extends Component {
           <TouchableOpacity style={styles.button} onPress={this.clearTimer}>
             <Text style={styles.buttonText}>CLEAR</Text>
           </TouchableOpacity>
+        </View>
+        <View style={styles.timesTampContainer}>
+          <Text style={styles.TextTimesTamp}>
+            {this.edisplayLastTime
+              ? 'Your last time: ' + this.state.timesTamp.toFixed(2)
+              : ''}
+          </Text>
         </View>
       </View>
     );
@@ -91,6 +103,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginTop: -160,
     marginBottom: 90,
+  },
+  timesTampContainer: {
+    flexDirection: 'row',
+    marginTop: 30,
+  },
+  TextTimesTamp: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
 
